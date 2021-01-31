@@ -25,7 +25,7 @@ export default function Home() {
         <QuizLogo />
         <Widget>
           <Widget.Header>
-            <h1>The legend of Zelda</h1>
+            <h1>CSS Awesome</h1>
           </Widget.Header>
           <Widget.Content>
             <form

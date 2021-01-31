@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 import db from '../db.json'
 import Widget from '../src/components/Widget'
@@ -7,25 +8,34 @@ import QuizLogo from '../src/components/QuizLogo'
 import QuizContainer from '../src/components/QuizContainer'
 import AlternativesForm from '../src/components/AlternativesForm'
 import Button from '../src/components/Button'
+import Spinner from '../src/components/Spinner'
 
-function ResultWidget({ results }) {
+function ResultWidget({ results, name, backToHome }) {
+  const quantityHits = results.filter(result => result).length
+
   return (
     <Widget>
       <Widget.Header>Resultado</Widget.Header>
 
       <Widget.Content>
         <p>
-          {`Você acertou ${results.filter(result => result).length} perguntas`}
+          {`Você acertou ${quantityHits} perguntas ${name}`}
           {/* {results.reduce((somatoriaAtual, resultAtual) => {
             const isAcerto = resultAtual === true
             return isAcerto ? somatoriaAtual + 1 : somatoriaAtual 
           }, 0)} */}
         </p>
         <ul>
-          {results.map((result, index) => (
-            <li key={index}>{`#${index + 1} Resultado: ${result === true ? 'Acertou' : 'Errou'}`}</li>
-          ))}
+          {results.map((result, index) => {
+            const indexQuestion = index + 1
+            return (
+              <li key={index}>{`#${indexQuestion < 10 ? `0${indexQuestion}` : indexQuestion} Resultado: ${
+                result ? 'Acertou' : 'Errou'
+              }`}</li>
+            )
+          })}
         </ul>
+        <Button onClick={() => backToHome()}>Voltar para Home</Button>
       </Widget.Content>
     </Widget>
   )
@@ -36,7 +46,9 @@ function LoadingWidget() {
     <Widget>
       <Widget.Header>Carregando...</Widget.Header>
 
-      <Widget.Content>[Desafio do Loading]</Widget.Content>
+      <Widget.Content>
+        <Spinner />
+      </Widget.Content>
     </Widget>
   )
 }
@@ -118,6 +130,10 @@ const screenStates = {
 }
 
 export default function QuizPage() {
+  const router = useRouter()
+  const {
+    query: { name }
+  } = router
   const [screenState, setScreenState] = useState(screenStates.LOADING)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [results, setResults] = useState([])
@@ -127,6 +143,10 @@ export default function QuizPage() {
 
   const addResult = result => {
     setResults([...results, result])
+  }
+
+  const backToHome = () => {
+    router.push('/')
   }
 
   useEffect(() => {
@@ -151,6 +171,7 @@ export default function QuizPage() {
         {screenState === screenStates.QUIZ && (
           <QuestionWidget
             question={question}
+            name={name}
             questionIndex={questionIndex}
             onSubmit={handleSubmitQuiz}
             totalQuestions={totalQuestions}
@@ -160,7 +181,7 @@ export default function QuizPage() {
 
         {screenState === screenStates.LOADING && <LoadingWidget />}
 
-        {screenState === screenStates.RESULT && <ResultWidget results={results} />}
+        {screenState === screenStates.RESULT && <ResultWidget results={results} name={name} backToHome={backToHome} />}
       </QuizContainer>
     </QuizBackground>
   )
