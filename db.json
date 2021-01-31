@@ -18,7 +18,10 @@
       "alternatives": ["background: linear-gradient(#e66465, #9198e5);", "background: gradient(#e66465, #9198e5);"]
     }
   ],
-  "external": [""],
+  "external": [
+    "https://aluraquiz-base.alura-challenges.vercel.app/",
+    "https://aluraquiz-devsoutinho.omariosouto.vercel.app/"
+  ],
   "theme": {
     "colors": {
       "primary": "#0d47a1",

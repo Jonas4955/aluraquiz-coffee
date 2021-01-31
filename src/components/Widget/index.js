@@ -65,6 +65,11 @@ Widget.Topic = styled.a`
   &:focus {
     opacity: 0.5;
   }
+
+  &[disabled-link='true'] {
+    background-color: #979797;
+    cursor: not-allowed;
+  }
 `
 
 export default Widget
