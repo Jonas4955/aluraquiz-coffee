@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import db from '../db.json'
-import Widget from '../src/components/Widget'
-import QuizBackground from '../src/components/QuizBackground'
-import QuizLogo from '../src/components/QuizLogo'
-import QuizContainer from '../src/components/QuizContainer'
-import AlternativesForm from '../src/components/AlternativesForm'
-import Button from '../src/components/Button'
-import Spinner from '../src/components/Spinner'
+import db from '../../db.json'
+import Widget from '../../src/components/Widget'
+import QuizBackground from '../../src/components/QuizBackground'
+import QuizLogo from '../../src/components/QuizLogo'
+import QuizContainer from '../../src/components/QuizContainer'
+import AlternativesForm from '../../src/components/AlternativesForm'
+import BackLinkArrow from '../../src/components/BackLinkArrow'
+import Button from '../../src/components/Button'
+import Spinner from '../../src/components/Spinner'
 
 function ResultWidget({ results, name, backToHome }) {
   const quantityHits = results.filter(result => result).length
@@ -63,6 +64,7 @@ function QuestionWidget({ question, questionIndex, onSubmit, totalQuestions, add
   return (
     <Widget>
       <Widget.Header>
+        <BackLinkArrow href="/" />
         <h3>{`Pergunta ${questionIndex + 1} de ${totalQuestions}`}</h3>
       </Widget.Header>
       <img
